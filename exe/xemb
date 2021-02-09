@@ -1,0 +1,17 @@
+#!/bin/env rc
+
+if(test $#* -lt 2)
+	exit 1
+
+prog = $2
+flag = $1
+shift ; shift
+arg = $*
+
+# Start new "xtab" session if program is called out of "XEMBED" context.
+if(test -z $XEMBED){
+	exec xtab -c -r 2 $prog $flag win $arg 
+}
+
+# Attach to current context.
+exec $prog $flag $XEMBED $arg
